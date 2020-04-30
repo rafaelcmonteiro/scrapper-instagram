@@ -14,12 +14,41 @@ browser.implicitly_wait(20)
 
 input_login = browser.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[2]/div/label/input')
 input_login.click()
-input_login.send_keys('login')
+input_login.send_keys('')
 
 input_password = browser.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[3]/div/label/input')
 input_password.click()
-input_password.send_keys('password')
+input_password.send_keys('')
 
-
+# Clicando no botão enter.
 btn_enter = browser.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[4]/button')
 btn_enter.click()
+
+# Rejeitando primeiro pop up
+btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div/div/div[3]/button[2]')
+btn_enter.click()
+
+# Acessando galeria.
+btn_enter = browser.find_element_by_xpath('/html/body/div[1]/section/main/section/div[3]/div[1]/div/div[2]/div[1]/a')
+btn_enter.click()
+
+# Acessando um item na galeria.
+btn_enter = browser.find_element_by_xpath('/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div['
+                                          '1]/a/div')
+btn_enter.click()
+
+# Pegando descriçao.
+btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/div[1]/ul/div/li/div/div/div['
+                                          '2]/span')
+print(btn_enter.text)
+
+# Pegando data.
+btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/div[2]/a/time')
+print(btn_enter.text)
+
+# Pegando likes.
+btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[2]/div/div[2]/button/span')
+print(btn_enter.text)
+
+
+
