@@ -28,7 +28,7 @@ A aplicação retira a quantidade de likes de dentro da tag \<span>2\</span> e
     distarch: x86_64
     target_arch: x86_64
     
-##### Configurando o environment:
+#### Configurando o environment:
 
 Após clonar o repositório na sua maquina, siga o passo a passo:
 * Crie o virtual environment.
@@ -46,7 +46,7 @@ E por fim rode o código abaixo com o virtual environment ativado.
     
 Nota: A aplicação usa o firefox para rodar, então é importante que o browser e o geckodriver estejam instalados corretamente no environment linux.
 
-##### Configurando a aplicação para o seu instagram:
+#### Configurando a aplicação para o seu instagram:
 
 Procure o código abaixo dentro de scrapper_insta.py.
     
