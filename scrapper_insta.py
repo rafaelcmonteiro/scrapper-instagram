@@ -9,46 +9,90 @@ from selenium import webdriver
 browser = webdriver.Firefox()
 browser.get('https://www.instagram.com/?hl=pt-br')
 browser.maximize_window()
-browser.implicitly_wait(20)
+browser.implicitly_wait(10)
 
 
-input_login = browser.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[2]/div/label/input')
-input_login.click()
-input_login.send_keys('')
-
-input_password = browser.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[3]/div/label/input')
-input_password.click()
-input_password.send_keys('')
-
-# Clicando no botão enter.
-btn_enter = browser.find_element_by_xpath('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[4]/button')
-btn_enter.click()
-
-# Rejeitando primeiro pop up
-btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div/div/div[3]/button[2]')
-btn_enter.click()
-
-# Acessando galeria.
-btn_enter = browser.find_element_by_xpath('/html/body/div[1]/section/main/section/div[3]/div[1]/div/div[2]/div[1]/a')
-btn_enter.click()
-
-# Acessando um item na galeria.
-btn_enter = browser.find_element_by_xpath('/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div['
-                                          '1]/a/div')
-btn_enter.click()
-
-# Pegando descriçao.
-btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/div[1]/ul/div/li/div/div/div['
-                                          '2]/span')
-print(btn_enter.text)
-
-# Pegando data.
-btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/div[2]/a/time')
-print(btn_enter.text)
-
-# Pegando likes.
-btn_enter = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[2]/div/div[2]/button/span')
-print(btn_enter.text)
+def function_click(x_path):
+    btn_enter = browser.find_element_by_xpath(x_path)
+    btn_enter.click()
+    return btn_enter
 
 
+def get_content(x_path):
+    btn_enter = browser.find_element_by_xpath(x_path)
+    return btn_enter
 
+
+def enter_into_account():
+    input_login = browser.find_element_by_xpath(
+        '/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[2]/div/label/input')
+    input_login.click()
+    input_login.send_keys('login')
+
+    input_password = browser.find_element_by_xpath(
+        '/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[3]/div/label/input')
+    input_password.click()
+    input_password.send_keys('password')
+
+    # Clicando no botão enter.
+    function_click('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[4]/button')
+
+    try:
+        function_click('/html/body/div[1]/section/main/div/div/div/div/button')
+    except:
+        print('Não há solicitação de salvar senha.')
+
+    # Rejeitando primeiro pop up
+    function_click('/html/body/div[4]/div/div/div[3]/button[2]')
+
+
+def accessing_gallery():
+    # Acessando galeria.
+    function_click('/html/body/div[1]/section/main/section/div[3]/div[1]/div/div[2]/div[1]/a')
+
+    # Acessando um item na galeria.  FULL_XPATH from class='eLAPa'
+    function_click('/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div[1]')
+
+
+def scrapping_content():
+    browser.implicitly_wait(10)
+
+    data_from_intagram = {'Data': []}
+
+    for x in range(5):
+
+        # Pegando descriçao.
+        try:
+            description = get_content('/html/body/div[4]/div[2]/div/article/div[2]/div[1]/ul/div/li/div/div/div[2]/span')
+            photo_description = description.text
+        except:
+            photo_description = 'Não há descrição.'
+
+        # Pegando data.
+        date_photo = get_content('/html/body/div[4]/div[2]/div/article/div[2]/div[2]/a/time')
+        date = date_photo.text
+
+        # Pegando likes.
+        total_likes = get_content('/html/body/div[4]/div[2]/div/article/div[2]/section[2]/div/div[2]/button/span')
+        likes = total_likes.text
+        likes = int(likes) + 1
+
+        photo_dict = {
+            'id': x,
+            'date': date,
+            'likes': likes,
+            'description': photo_description
+        }
+
+        data_from_intagram['Data'].append(photo_dict)
+
+        # test
+        if x == 29:
+            print('End')
+        else:
+            if x == 0:
+                function_click('/html/body/div[4]/div[1]/div/div/a')
+            else:
+                function_click('/html/body/div[4]/div[1]/div/div/a[2]')
+
+    return data_from_intagram
