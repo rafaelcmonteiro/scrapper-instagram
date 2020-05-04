@@ -18,21 +18,20 @@ def function_click(x_path):
     return btn_enter
 
 
+def login(input_path, key):
+    input_login = browser.find_element_by_xpath(input_path)
+    input_login.click()
+    input_login.send_keys(key)
+
+
 def get_content(x_path):
     btn_enter = browser.find_element_by_xpath(x_path)
     return btn_enter
 
 
 def enter_into_account():
-    input_login = browser.find_element_by_xpath(
-        '/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[2]/div/label/input')
-    input_login.click()
-    input_login.send_keys('login')
-
-    input_password = browser.find_element_by_xpath(
-        '/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[3]/div/label/input')
-    input_password.click()
-    input_password.send_keys('password')
+    login('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[2]/div/label/input', 'login')
+    login('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[3]/div/label/input', 'password')
 
     # Clicando no botão enter.
     function_click('/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div[4]/button')
@@ -59,7 +58,7 @@ def scrapping_content():
 
     data_from_intagram = {'Data': []}
 
-    for x in range(5):
+    for x in range(30):
 
         # Pegando descriçao.
         try:
@@ -96,3 +95,4 @@ def scrapping_content():
                 function_click('/html/body/div[4]/div[1]/div/div/a[2]')
 
     return data_from_intagram
+
