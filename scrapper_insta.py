@@ -50,49 +50,55 @@ def accessing_gallery():
     function_click('/html/body/div[1]/section/main/section/div[3]/div[1]/div/div[2]/div[1]/a')
 
     # Acessando um item na galeria.  FULL_XPATH from class='eLAPa'
-    function_click('/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div[1]')
+    function_click('//div[@class="eLAPa"]')
 
 
 def scrapping_content():
     browser.implicitly_wait(10)
 
+    # Pegadando a quantidade de publicações.
+    quantity = get_content('/html/body/div[1]/section/main/div/header/section/ul/li[1]/span/span')
+
     data_from_intagram = {'Data': []}
 
-    for x in range(30):
-
-        # Pegando descriçao.
+    for x in range(int(quantity.text)):
         try:
-            description = get_content('/html/body/div[4]/div[2]/div/article/div[2]/div[1]/ul/div/li/div/div/div[2]/span')
-            photo_description = description.text
-        except:
-            photo_description = 'Não há descrição.'
+            try:
+                # Pegando descriçao.
+                description = get_content(
+                    '/html/body/div[4]/div[2]/div/article/div[2]/div[1]/ul/div/li/div/div/div[2]/span')
+                photo_description = description.text
+            except:
+                photo_description = "Não há descrição"
 
-        # Pegando data.
-        date_photo = get_content('/html/body/div[4]/div[2]/div/article/div[2]/div[2]/a/time')
-        date = date_photo.text
+            # Pegando data.
 
-        # Pegando likes.
-        total_likes = get_content('/html/body/div[4]/div[2]/div/article/div[2]/section[2]/div/div[2]/button/span')
-        likes = total_likes.text
-        likes = int(likes) + 1
+            date_photo = get_content('/html/body/div[4]/div[2]/div/article/div[2]/div[2]/a/time')
+            date = date_photo.text
 
-        photo_dict = {
-            'id': x,
-            'date': date,
-            'likes': likes,
-            'description': photo_description
-        }
+            # Pegando likes.
+            total_likes = get_content('/html/body/div[4]/div[2]/div/article/div[2]/section[2]/div/div[2]/button/span')
+            likes = total_likes.text
+            likes = int(likes) + 1
 
-        data_from_intagram['Data'].append(photo_dict)
+            photo_dict = {
+                'id': x,
+                'date': date,
+                'likes': likes,
+                'description': photo_description
+            }
 
-        # test
-        if x == 29:
-            print('End')
-        else:
-            if x == 0:
-                function_click('/html/body/div[4]/div[1]/div/div/a')
+            data_from_intagram['Data'].append(photo_dict)
+
+            # test
+            if x == (int(quantity.text)-1):
+                print('End')
             else:
-                function_click('/html/body/div[4]/div[1]/div/div/a[2]')
+                if x == 0:
+                    function_click('/html/body/div[4]/div[1]/div/div/a')
+                else:
+                    function_click('/html/body/div[4]/div[1]/div/div/a[2]')
+        except:
+            continue
 
     return data_from_intagram
-

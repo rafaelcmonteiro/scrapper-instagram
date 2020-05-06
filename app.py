@@ -15,7 +15,7 @@ def show_json_content():
             print('id: ' + str(p['id']))
             print('date: ' + p['date'])
             print('likes: ' + str(p['likes']))
-            print('description' + p['description'])
+            print('description: ' + p['description'])
             print('')
 
 
@@ -25,3 +25,5 @@ if __name__ == '__main__':
     data_from_instagram = scrapper_insta.scrapping_content()
 
     insert_into_txt(data_from_instagram)
+
+    show_json_content()
